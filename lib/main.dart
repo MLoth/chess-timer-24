@@ -1,7 +1,19 @@
+import 'package:chess_timer/components/controls.dart';
+import 'package:chess_timer/components/player.dart';
+import 'package:chess_timer/utils/game.dart';
+import 'package:chess_timer/utils/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => Game()),
+      ],
+      child: const MainApp(),
+    ),
+  );
 }
 
 class MainApp extends StatelessWidget {
@@ -9,10 +21,22 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
+        body: Theme(
+          data: getTheme(),
+          child: const Column(
+            children: [
+              Expanded(
+                child: Player(player: 0),
+              ),
+              Controls(),
+              Expanded(
+                child: Player(player: 1),
+              ),
+            ],
+          ),
         ),
       ),
     );
